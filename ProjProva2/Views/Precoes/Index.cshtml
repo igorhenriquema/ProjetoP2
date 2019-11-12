@@ -1,0 +1,39 @@
+﻿@model IEnumerable<ProjProva2.Preco>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.preco1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Material.descricao)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.preco1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Material.descricao)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.idPreco }) |
+            @Html.ActionLink("Details", "Details", new { id=item.idPreco }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.idPreco })
+        </td>
+    </tr>
+}
+
+</table>

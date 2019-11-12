@@ -1,0 +1,34 @@
+﻿@model ProjProva2.Preco
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Preco</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.preco1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.preco1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Material.descricao)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Material.descricao)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.idPreco }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

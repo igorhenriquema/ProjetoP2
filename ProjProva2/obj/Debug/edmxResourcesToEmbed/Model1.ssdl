@@ -1,0 +1,239 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="dbProva2Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <!--Errors Found During Generation:
+warning 6013: The table/view 'dbProj3.dbo.CAIXA' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="CAIXA">
+          <Property Name="DATA" Type="datetime" />
+          <Property Name="SALDO_INICIAL" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="SALDO_FINAL" Type="decimal" Precision="10" Scale="2" />
+        </EntityType>-->
+  <EntityType Name="Cliente">
+    <Key>
+      <PropertyRef Name="idCliente" />
+    </Key>
+    <Property Name="idCliente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nomeCliente" Type="varchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="Estoque">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idMaterial" Type="int" />
+    <Property Name="quantidade" Type="int" />
+  </EntityType>
+  <EntityType Name="Fornecedor">
+    <Key>
+      <PropertyRef Name="idFornecedor" />
+    </Key>
+    <Property Name="idFornecedor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nomeFornecedor" Type="varchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="Material">
+    <Key>
+      <PropertyRef Name="idMaterial" />
+    </Key>
+    <Property Name="idMaterial" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="descricao" Type="varchar" MaxLength="200" />
+    <Property Name="idUnMedida" Type="int" />
+  </EntityType>
+  <EntityType Name="OrdemVenda">
+    <Key>
+      <PropertyRef Name="idOrdemVenda" />
+    </Key>
+    <Property Name="idOrdemVenda" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idMaterial" Type="int" />
+    <Property Name="idCliente" Type="int" />
+    <Property Name="quantidade" Type="varchar" MaxLength="50" />
+    <Property Name="valor" Type="decimal" Precision="10" Scale="2" />
+    <Property Name="data" Type="datetime" />
+  </EntityType>
+  <EntityType Name="PedidoCompra">
+    <Key>
+      <PropertyRef Name="idPedCompra" />
+    </Key>
+    <Property Name="idPedCompra" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idMaterial" Type="int" />
+    <Property Name="idFornecedor" Type="int" />
+    <Property Name="quantidade" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Preco">
+    <Key>
+      <PropertyRef Name="idPreco" />
+    </Key>
+    <Property Name="idPreco" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idMaterial" Type="int" />
+    <Property Name="preco" Type="decimal" Precision="10" Scale="2" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="UnidadeMedida">
+    <Key>
+      <PropertyRef Name="idUnMedida" />
+    </Key>
+    <Property Name="idUnMedida" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="descricao" Type="varchar" MaxLength="200" />
+  </EntityType>
+  <Association Name="FK_Estoque_Material">
+    <End Role="Material" Type="Self.Material" Multiplicity="0..1" />
+    <End Role="Estoque" Type="Self.Estoque" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Material">
+        <PropertyRef Name="idMaterial" />
+      </Principal>
+      <Dependent Role="Estoque">
+        <PropertyRef Name="idMaterial" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Material_UnidadeMedida">
+    <End Role="UnidadeMedida" Type="Self.UnidadeMedida" Multiplicity="0..1" />
+    <End Role="Material" Type="Self.Material" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UnidadeMedida">
+        <PropertyRef Name="idUnMedida" />
+      </Principal>
+      <Dependent Role="Material">
+        <PropertyRef Name="idUnMedida" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Ordem de Venda_Cliente">
+    <End Role="Cliente" Type="Self.Cliente" Multiplicity="0..1" />
+    <End Role="OrdemVenda" Type="Self.OrdemVenda" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Cliente">
+        <PropertyRef Name="idCliente" />
+      </Principal>
+      <Dependent Role="OrdemVenda">
+        <PropertyRef Name="idCliente" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Ordem de Venda_Material">
+    <End Role="Material" Type="Self.Material" Multiplicity="0..1" />
+    <End Role="OrdemVenda" Type="Self.OrdemVenda" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Material">
+        <PropertyRef Name="idMaterial" />
+      </Principal>
+      <Dependent Role="OrdemVenda">
+        <PropertyRef Name="idMaterial" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PedidoCompra_Fornecedor">
+    <End Role="Fornecedor" Type="Self.Fornecedor" Multiplicity="0..1" />
+    <End Role="PedidoCompra" Type="Self.PedidoCompra" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Fornecedor">
+        <PropertyRef Name="idFornecedor" />
+      </Principal>
+      <Dependent Role="PedidoCompra">
+        <PropertyRef Name="idFornecedor" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PedidoCompra_Material">
+    <End Role="Material" Type="Self.Material" Multiplicity="0..1" />
+    <End Role="PedidoCompra" Type="Self.PedidoCompra" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Material">
+        <PropertyRef Name="idMaterial" />
+      </Principal>
+      <Dependent Role="PedidoCompra">
+        <PropertyRef Name="idMaterial" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Preco_Material">
+    <End Role="Material" Type="Self.Material" Multiplicity="0..1" />
+    <End Role="Preco" Type="Self.Preco" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Material">
+        <PropertyRef Name="idMaterial" />
+      </Principal>
+      <Dependent Role="Preco">
+        <PropertyRef Name="idMaterial" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <EntityContainer Name="dbProva2ModelStoreContainer">
+    <EntitySet Name="Cliente" EntityType="Self.Cliente" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Estoque" EntityType="Self.Estoque" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Fornecedor" EntityType="Self.Fornecedor" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Material" EntityType="Self.Material" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OrdemVenda" EntityType="Self.OrdemVenda" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PedidoCompra" EntityType="Self.PedidoCompra" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Preco" EntityType="Self.Preco" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UnidadeMedida" EntityType="Self.UnidadeMedida" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Estoque_Material" Association="Self.FK_Estoque_Material">
+      <End Role="Material" EntitySet="Material" />
+      <End Role="Estoque" EntitySet="Estoque" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Material_UnidadeMedida" Association="Self.FK_Material_UnidadeMedida">
+      <End Role="UnidadeMedida" EntitySet="UnidadeMedida" />
+      <End Role="Material" EntitySet="Material" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Ordem de Venda_Cliente" Association="Self.FK_Ordem de Venda_Cliente">
+      <End Role="Cliente" EntitySet="Cliente" />
+      <End Role="OrdemVenda" EntitySet="OrdemVenda" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Ordem de Venda_Material" Association="Self.FK_Ordem de Venda_Material">
+      <End Role="Material" EntitySet="Material" />
+      <End Role="OrdemVenda" EntitySet="OrdemVenda" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PedidoCompra_Fornecedor" Association="Self.FK_PedidoCompra_Fornecedor">
+      <End Role="Fornecedor" EntitySet="Fornecedor" />
+      <End Role="PedidoCompra" EntitySet="PedidoCompra" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PedidoCompra_Material" Association="Self.FK_PedidoCompra_Material">
+      <End Role="Material" EntitySet="Material" />
+      <End Role="PedidoCompra" EntitySet="PedidoCompra" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Preco_Material" Association="Self.FK_Preco_Material">
+      <End Role="Material" EntitySet="Material" />
+      <End Role="Preco" EntitySet="Preco" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
